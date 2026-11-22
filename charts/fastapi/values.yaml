@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: tp4-fastapi
-  tag: v1
+  tag: v999
   pullPolicy: IfNotPresent
 service:
   port: 80
