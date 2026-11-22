@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: tp4-alerts
+  labels:
+    app.kubernetes.io/part-of: tp4
+spec:
+  groups:
+    - name: tp4-gitops-alerts
+      rules:
+        - alert: TP4InvalidImageOrUnhealthy
+          expr: |
+            (kube_pod_container_status_waiting_reason{namespace="tp4-app",reason=~"ImagePullBackOff|ErrImagePull|CrashLoopBackOff"} > 0)
+            or
+            (argocd_app_info{name="tp4-fastapi",health_status="Degraded"} == 1)
+          for: 2m
+          labels:
+            severity: warning
+            project: tp4
+          annotations:
+            summary: "TP4 demo: pod image failure or ArgoCD health degraded"
+            description: "This alert fires after the demo anomaly lasts 2 minutes."

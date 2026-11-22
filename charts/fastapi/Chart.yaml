@@ -1,0 +1,5 @@
+apiVersion: v2
+name: tp4-fastapi
+version: 0.1.0
+appVersion: "1.0.0"
+description: FastAPI TP4 demo with Prometheus metrics

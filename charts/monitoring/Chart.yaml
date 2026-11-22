@@ -1,0 +1,9 @@
+apiVersion: v2
+name: tp4-monitoring
+version: 0.1.0
+description: Umbrella chart for kube-prometheus-stack and custom TP4 monitoring
+# Pin the dependency version for a reproducible classroom exercise.
+dependencies:
+  - name: kube-prometheus-stack
+    version: "93.4.0"
+    repository: https://prometheus-community.github.io/helm-charts

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tp4-fastapi
+  labels:
+    app.kubernetes.io/name: tp4-fastapi
+spec:
+  replicas: {{ .Values.replicaCount }}
+  progressDeadlineSeconds: 90
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tp4-fastapi
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tp4-fastapi
+    spec:
+      containers:
+        - name: fastapi
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 8
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

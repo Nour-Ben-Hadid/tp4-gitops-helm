@@ -1,0 +1,62 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: tp4-fastapi
+  labels:
+    app.kubernetes.io/part-of: tp4
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.customMonitoring.applicationNamespace | quote }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tp4-fastapi
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: tp4-argocd-controller
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.customMonitoring.argocdNamespace | quote }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-metrics
+  endpoints:
+    - port: metrics
+      interval: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: tp4-argocd-server
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.customMonitoring.argocdNamespace | quote }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-server-metrics
+  endpoints:
+    - port: metrics
+      interval: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: tp4-argocd-repo-server
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.customMonitoring.argocdNamespace | quote }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-repo-server
+  endpoints:
+    - port: metrics
+      interval: 15s

@@ -1,0 +1,36 @@
+customMonitoring:
+  argocdNamespace: argocd
+  applicationNamespace: tp4-app
+kube-prometheus-stack:
+  alertmanager:
+    enabled: true
+  grafana:
+    enabled: true
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        labelValue: "1"
+  prometheus:
+    prometheusSpec:
+      retention: 6h
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      ruleSelectorNilUsesHelmValues: false
+      serviceMonitorNamespaceSelector: {}
+      ruleNamespaceSelector: {}
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          cpu: "1"
+          memory: 1536Mi
+  kubeControllerManager:
+    enabled: false
+  kubeScheduler:
+    enabled: false
+  kubeEtcd:
+    enabled: false
+  kubeProxy:
+    enabled: false
